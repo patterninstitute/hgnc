@@ -10,8 +10,25 @@ list_archives(type = c("tsv", "json"))
 \item{type}{The format of the archive: \code{"tsv"} or \code{"json"}.}
 }
 \value{
-A \link[tibble:tibble-package]{tibble} of available archives for download.
+A \link[tibble:tibble-package]{tibble} of available archives for
+download with the following columns:
+\itemize{
+\item \code{series}: whether \code{"monthly"} or \code{"quarterly"}.
+\item \code{dataset}: type of data set (\code{"hgnc_complete_set"},
+\code{"symbol-changes-monthly"}, \code{"withdrawn"} or \code{"symbol-changes-quarterly"}).
+\item \code{file}: file name.
+\item \code{date}: update date.
+\item \code{size}: file size.
+\item \code{last_modified}: date-time of file last modification on server.
+\item \code{url}: direct address to the archive.
+}
 }
 \description{
-This function lists the monthly and quarterly archives currently available.
+This function lists the monthly and quarterly archives currently available
+from the HGNC FTP server:
+\url{https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/archive/}.
+}
+\examples{
+try(list_archives())
+
 }
