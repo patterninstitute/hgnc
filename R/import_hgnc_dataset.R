@@ -216,7 +216,6 @@ import_hgnc_dataset_ <- function(file, ...) {
 #'
 #' @examples
 #' \dontrun{import_hgnc_dataset()}
-#' @importFrom rlang .data
 #' @export
 # import_hgnc_dataset memoised in zzz.R
 import_hgnc_dataset <- function(file = get_hgnc_file(),

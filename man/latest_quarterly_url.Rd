@@ -13,6 +13,6 @@ A string with the latest HGNC monthly archive URL.
 Latest HGNC quarterly URL
 }
 \examples{
-latest_quarterly_url()
+try(latest_quarterly_url())
 
 }

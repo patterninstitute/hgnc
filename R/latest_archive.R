@@ -1,5 +1,3 @@
-
-#' @importFrom rlang .data
 latest_archive <- function(type = c('tsv', 'json')) {
 
   type <- match.arg(type)
@@ -35,7 +33,6 @@ latest_archive <- function(type = c('tsv', 'json')) {
 #' latest_archive_url()
 #'
 #' @export
-#' @importFrom rlang .data
 latest_archive_url <- function(type = c('tsv', 'json')) {
 
   type <- match.arg(type)
@@ -43,7 +40,6 @@ latest_archive_url <- function(type = c('tsv', 'json')) {
   extension <- ifelse(type == 'tsv', 'txt', 'json')
   filename <- paste0(basename, '.', extension)
   url <- paste0(ftp_base_url(), type, '/', filename)
-  # allow memoisation to recognise new updates
   attr(url, 'last_update') <- last_update()
 
   return(url)
@@ -54,10 +50,9 @@ latest_archive_url <- function(type = c('tsv', 'json')) {
 #' @return A string with the latest HGNC monthly archive URL.
 #'
 #' @examples
-#' latest_monthly_url()
+#' try(latest_monthly_url())
 #'
 #' @export
-#' @importFrom rlang .data
 latest_monthly_url <- function() {
 
   url <-
@@ -68,7 +63,7 @@ latest_monthly_url <- function() {
     dplyr::pull(url) %>%
     dplyr::last()
 
-  stopifnot(length(url) == 1)
+  stopifnot(length(url) == 1L)
 
   return(url)
 }
@@ -78,10 +73,9 @@ latest_monthly_url <- function() {
 #' @return A string with the latest HGNC monthly archive URL.
 #'
 #' @examples
-#' latest_quarterly_url()
+#' try(latest_quarterly_url())
 #'
 #' @export
-#' @importFrom rlang .data
 latest_quarterly_url <- function() {
 
   url <-
@@ -92,7 +86,7 @@ latest_quarterly_url <- function() {
     dplyr::pull(url) %>%
     dplyr::last()
 
-  stopifnot(length(url) == 1)
+  stopifnot(length(url) == 1L)
 
   return(url)
 }
