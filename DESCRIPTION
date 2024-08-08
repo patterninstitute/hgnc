@@ -1,6 +1,6 @@
 Package: hgnc
 Type: Package
-Title: Import HUGO Gene Nomenclature Committee Data
+Title: Import Human Gene Nomenclature
 Version: 0.2.0
 Authors@R: c(
     person(given = "Ramiro", family = "Magno",
