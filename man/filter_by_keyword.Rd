@@ -11,9 +11,11 @@ filter_by_keyword(
 )
 }
 \arguments{
-\item{tbl}{A tibble containing the HGNC data set, typically obtained with \code{import_hgnc_dataset()}.}
+\item{tbl}{A tibble containing the HGNC data set, typically obtained with
+\code{import_hgnc_dataset()}.}
 
-\item{keyword}{A keyword or a regular expression to be used as search criterion.}
+\item{keyword}{A keyword or a regular expression to be used as search
+criterion.}
 
 \item{cols}{Columns to be looked up.}
 }
@@ -22,11 +24,11 @@ A \link[tibble:tibble-package]{tibble} of the HGNC data set filtered by
 observations matching the \code{keyword}.
 }
 \description{
-Filter the HGNC data set by a keyword to be looked up in the columns
-containing gene names or symbols. By default, it will look up in \code{symbol},
-\code{name}, \code{alias_symbol}, \code{alias_name}, \code{prev_symbol} and \code{prev_name}. Note
-that this function in dive into list-columns and match return a hit result if
-at least one of the strings matches the \code{keyword}.
+Filter the HGNC data set by a keyword (or a regex) to be looked up in the
+columns containing gene names or symbols. By default, it will look up in
+\code{symbol}, \code{name}, \code{alias_symbol}, \code{alias_name}, \code{prev_symbol} and
+\code{prev_name}. Note that this function dives into list-columns for matching and
+returns a gene entry if at least one of the strings matches the \code{keyword}.
 }
 \examples{
 \dontrun{
@@ -34,23 +36,23 @@ at least one of the strings matches the \code{keyword}.
 hgnc_tbl <- import_hgnc_dataset()
 
 # Search for entries containing "TP53" in the HGNC data set
-hgnc_tbl \%>\%
-  filter_by_keyword('TP53') \%>\%
+hgnc_tbl |>
+  filter_by_keyword('TP53') |>
   dplyr::select(1:4)
 
 # The same as above but restrict the search to the `symbol` column
-hgnc_tbl \%>\%
-  filter_by_keyword('TP53', cols = 'symbol') \%>\%
+hgnc_tbl |>
+  filter_by_keyword('TP53', cols = 'symbol') |>
   dplyr::select(1:4)
 
 # Match "TP53" exactly in the `symbol` column
-hgnc_tbl \%>\%
-  filter_by_keyword('^TP53$', cols = 'symbol') \%>\%
+hgnc_tbl |>
+  filter_by_keyword('^TP53$', cols = 'symbol') |>
   dplyr::select(1:4)
 
 # `filter_by_keyword()` is vectorised over `keyword`
-hgnc_tbl \%>\%
-  filter_by_keyword(c('^TP53$', '^PIK3CA$'), cols = 'symbol') \%>\%
+hgnc_tbl |>
+  filter_by_keyword(c('^TP53$', '^PIK3CA$'), cols = 'symbol') |>
   dplyr::select(1:4)
 }
 
