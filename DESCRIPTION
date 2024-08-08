@@ -35,8 +35,6 @@ Imports:
     cachem,
     dplyr,
     hms,
-    httr,
-    jsonlite,
     lubridate,
     magrittr,
     memoise,

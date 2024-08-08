@@ -23,9 +23,22 @@ last_update <- function() {
   # vigilant in case this endpoint no longer works.
   #
   url <- 'https://www.genenames.org/cgi-bin/statistics/symbol-reports-by-chromosome'
-  response <- httr::GET(url)
-  content <- httr::content(response, as = 'text')
-  datetime <- lubridate::parse_date_time(jsonlite::parse_json(content)$date, 'dmy HMS')
+  response <- readLines(url, warn = FALSE)
 
-  return(datetime)
+  pattern <- '\\{"date":"[^,]*",'
+  m <- regexpr(pattern, response)
+  date_time_json <- regmatches(response, m = m)
+
+  date_time_txt <-
+    date_time_json |>
+    sub(pattern = '\\{"date":"',
+        replacement = "",
+        x = _) |>
+    sub(pattern = '",',
+        replacement = "",
+        x = _)
+
+  lubridate::parse_date_time(date_time_txt, 'dmy HMS')
 }
+
+
