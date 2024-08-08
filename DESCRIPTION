@@ -15,10 +15,7 @@ Authors@R: c(
       email = "maia.anateresa@gmail.com", role = "ctb", 
       comment = c(ORCID = "0000-0002-0454-9207")),
     person("CINTESIS", role = c("cph", "fnd")),
-    person("Pattern Institute", role = c("cph", "fnd")),
-    person(given = "Jacob", family = "Munro",
-      email = "jacob.e.munro@gmail.com", role = "aut", 
-      comment = c(ORCID = "0000-0002-2751-0989"))
+    person("Pattern Institute", role = c("cph", "fnd"))
     )
 Description: A set of routines to quickly download and import the
     HUGO Gene Nomenclature Committee Data (HGNC) data set on mapping of

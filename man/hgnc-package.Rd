@@ -20,11 +20,6 @@ Useful links:
 \author{
 \strong{Maintainer}: Ramiro Magno \email{rmagno@pattern.institute} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
 
-Authors:
-\itemize{
-  \item Jacob Munro \email{jacob.e.munro@gmail.com} (\href{https://orcid.org/0000-0002-2751-0989}{ORCID})
-}
-
 Other contributors:
 \itemize{
   \item Jacob Munro \email{jacob.e.munro@gmail.com} (\href{https://orcid.org/0000-0002-2751-0989}{ORCID}) [contributor]
