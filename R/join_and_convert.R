@@ -41,7 +41,7 @@ get_hgnc_key_table <- function(key,
 #' @param by The column to join by, as in [dplyr::left_join()].
 #' @param column The column to add to the data frame from the HGNC dataset
 #' @param one_to_many A boolean value indicating whether cases where the 'by'
-#'   column maps to multiple valuesof the selected column should be returned. If
+#'   column maps to multiple values of the selected column should be returned. If
 #'   set to `FASLE` (the default), such one-to-many cases will yield NA. If set
 #'   to `TRUE`, the returned column will be a list of vectors of varying length.
 #' @param file A file or URL of the complete HGNC data set (in TSV format), as

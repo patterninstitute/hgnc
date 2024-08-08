@@ -20,7 +20,7 @@ hgnc_join(
 \item{column}{The column to add to the data frame from the HGNC dataset}
 
 \item{one_to_many}{A boolean value indicating whether cases where the 'by'
-column maps to multiple valuesof the selected column should be returned. If
+column maps to multiple values of the selected column should be returned. If
 set to \code{FASLE} (the default), such one-to-many cases will yield NA. If set
 to \code{TRUE}, the returned column will be a list of vectors of varying length.}
 
