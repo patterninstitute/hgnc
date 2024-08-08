@@ -1,4 +1,3 @@
-#' @importFrom rlang .data
 ftp_ls <- function(url) {
 
   txt <-
