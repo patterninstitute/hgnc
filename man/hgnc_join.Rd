@@ -13,16 +13,19 @@ hgnc_join(
 )
 }
 \arguments{
-\item{.data}{The data frame to join with}
+\item{.data}{The data frame to join with.}
 
-\item{by}{The column to join by, as in \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}}
+\item{by}{The column to join by, as in \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}.}
 
 \item{column}{The column to add to the data frame from the HGNC dataset}
 
-\item{one_to_many}{A boolean value indicating whether cases where the 'by' column maps to multiple valuesof the selected column should be returned.
-If set to \code{FASLE} (the default), such one-to-many cases will yield NA. If set to \code{TRUE}, the returned column will be a list of vectors of varying length.}
+\item{one_to_many}{A boolean value indicating whether cases where the 'by'
+column maps to multiple valuesof the selected column should be returned. If
+set to \code{FASLE} (the default), such one-to-many cases will yield NA. If set
+to \code{TRUE}, the returned column will be a list of vectors of varying length.}
 
-\item{file}{A file or URL of the complete HGNC data set (in TSV format), as used by \code{\link[=import_hgnc_dataset]{import_hgnc_dataset()}}.}
+\item{file}{A file or URL of the complete HGNC data set (in TSV format), as
+used by \code{\link[=import_hgnc_dataset]{import_hgnc_dataset()}}.}
 }
 \value{
 A data frame with the HGNC column added
