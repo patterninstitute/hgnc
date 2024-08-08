@@ -1,6 +1,6 @@
 Package: hgnc
 Type: Package
-Title: Download and Import the HUGO Gene Nomenclature Committee ('HGNC') Data Set into R
+Title: Import HUGO Gene Nomenclature Committee Data
 Version: 0.2.0
 Authors@R: c(
     person(given = "Ramiro", family = "Magno",
@@ -20,9 +20,9 @@ Authors@R: c(
       email = "jacob.e.munro@gmail.com", role = "aut", 
       comment = c(ORCID = "0000-0002-2751-0989"))
     )
-Description: A set of routines to quickly download and import the 'HGNC'
-    data set on mapping of gene symbols to gene entries in other popular
-    databases or resources.
+Description: A set of routines to quickly download and import the
+    HUGO Gene Nomenclature Committee Data (HGNC) data set on mapping of
+    gene symbols to gene entries in other genomic databases or resources.
 License: MIT + file LICENSE
 URL: https://github.com/ramiromagno/hgnc,
     https://rmagno.eu/hgnc/
