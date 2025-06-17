@@ -8,12 +8,12 @@
 #' @return An integer vector of the same length as `x`, where each element indicates the number of times it matches in `y`.
 #'
 #' @examples
+#' \dontrun{
 #' x <- c(1, 2, 3)
 #' y <- c(1, 1, 2, 4)
-#' n_match(x, y)
+#' n_match(x, y)}
 #'
 #' @keywords internal
-#' @export
 n_match <- function(x, y) {
   outer(X = x, Y = y, FUN = "==") |>
     rowSums()
@@ -29,12 +29,12 @@ n_match <- function(x, y) {
 #' @return A logical vector of the same length as `x`, where each element is `TRUE` if it matches exactly once in `y`, and `FALSE` otherwise.
 #'
 #' @examples
+#' \dontrun{
 #' x <- c(1, 2, 3)
 #' y <- c(1, 1, 2, 4)
-#' matches_once(x, y)
+#' matches_once(x, y)}
 #'
 #' @keywords internal
-#' @export
 matches_once <- function(x, y) {
   n_match(x,y) == 1L
 }

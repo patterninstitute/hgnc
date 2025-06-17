@@ -18,9 +18,10 @@ An integer vector of the same length as \code{x}, where each element indicates t
 This function counts how many times each element of vector \code{x} matches any element in vector \code{y}.
 }
 \examples{
+\dontrun{
 x <- c(1, 2, 3)
 y <- c(1, 1, 2, 4)
-n_match(x, y)
+n_match(x, y)}
 
 }
 \keyword{internal}

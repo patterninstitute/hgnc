@@ -18,9 +18,10 @@ A logical vector of the same length as \code{x}, where each element is \code{TRU
 This function checks whether a specific element from vector \code{x} appears exactly once in vector \code{y}.
 }
 \examples{
+\dontrun{
 x <- c(1, 2, 3)
 y <- c(1, 1, 2, 4)
-matches_once(x, y)
+matches_once(x, y)}
 
 }
 \keyword{internal}

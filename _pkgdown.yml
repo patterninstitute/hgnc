@@ -15,3 +15,32 @@ authors:
     href: https://www.linkedin.com/in/ana-teresa-maia-2a1a866/
   Pattern Institute:
     href: https://www.pattern.institute
+
+reference:
+- title: Import Human Gene Names
+  contents:
+  - import_hgnc_dataset
+  - download_hgnc_dataset
+
+- title: Filter and crosswalks gene identifiers
+  desc: >
+    Find gene entries by keyword matching or copnvert across gene identifiers
+    and other variables
+  contents:
+  - filter_by_keyword
+  - crosswalk
+
+- title: Archives and updates
+  desc: List monthly or quarterly archives
+  contents:
+  - last_update
+  - list_archives
+  - latest_archive_url
+  - latest_monthly_url
+  - latest_quarterly_url
+
+
+- title: Data
+  desc: Bundled example data
+  contents:
+  - hgnc_dataset_example

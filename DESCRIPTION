@@ -1,7 +1,7 @@
 Package: hgnc
 Type: Package
 Title: Import Human Gene Nomenclature
-Version: 0.2.9003
+Version: 0.2.9004
 Authors@R: c(
     person(given = "Ramiro", family = "Magno",
       email = "rmagno@pattern.institute",
