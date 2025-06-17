@@ -10,7 +10,8 @@ status](https://www.r-pkg.org/badges/version/hgnc)](https://CRAN.R-project.org/p
 [![R-CMD-check](https://github.com/patterninstitute/hgnc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/patterninstitute/hgnc/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of `{hgnc}` is to easily import Human Gene Nomenclature into R.
+The goal of `{hgnc}` is to easily import [Human Gene
+Nomenclature](https://www.genenames.org) into R.
 
 ## Installation
 
@@ -22,16 +23,16 @@ install.packages("hgnc")
 
 ## Usage
 
-### Basic usage
-
 To import the latest HGNC gene data set in tabular format directly into
 memory as a tibble do as follows:
 
 ``` r
 library(hgnc)
+
 # Check the date of HGNC last update
 last_update()
 #> [1] "2025-06-17 11:10:30 UTC"
+
 # Import the data set in tidy tabular format
 (hgnc_dataset <- import_hgnc_dataset())
 #> # A tibble: 44,117 × 55
@@ -56,122 +57,10 @@ last_update()
 #> #   ena <list>, refseq_accession <list>, ccds_id <list>, uniprot_ids <list>, …
 ```
 
-### Convert between gene identifiers
+## Learn more
 
-Use `crosswalk()` to convert values found in one of the columns of an
-HGNC gene data set to values in another:
-
-``` r
-# convert a set of hgnc_ids to symbols
-hgnc_ids <- c("HGNC:44948", "HGNC:43240", "HGNC:23357", "HGNC:1855", "HGNC:39400")
-crosswalk(hgnc_ids, from = 'hgnc_id', to = 'symbol')
-#> [1] "GOLGA2P6"  "RNA5SP340" "MCTS1"     "CENPCP1"   "ASNSP4"
-
-# convert a set of entrez_ids to ensembl_gene_ids
-entrez_ids <- c(79933, 109623458, 158471, 54987, 81631)
-crosswalk(entrez_ids, from = 'entrez_id', to = 'ensembl_gene_id')
-#> [1] "ENSG00000166317" NA                "ENSG00000106772" "ENSG00000162384"
-#> [5] "ENSG00000140941"
-```
-
-## Motivation
-
-You could go to [www.genenames.org](https://www.genenames.org) and
-download the files yourself. So why the need for this R package?
-
-`{hgnc}` really is just a convenience package. The main advantage is
-that the function `import_hgnc_dataset()` reads in the data in tabular
-format with all the columns with the appropriate type (so you don’t have
-to specify it yourself). As an extra step, those variables that contain
-multiple values are encoded as list-columns.
-
-Remember that list-columns can be expanded with `tidyr::unnest()`. E.g.,
-`alias_symbol` is a list-column containing multiple alternative aliases
-to the standard `symbol`:
-
-``` r
-hgnc_dataset |>
-  dplyr::filter(symbol == 'TP53') |>
-  dplyr::select(c('symbol', 'alias_symbol'))
-#> # A tibble: 1 × 2
-#>   symbol alias_symbol
-#>   <chr>  <list>      
-#> 1 TP53   <chr [2]>
-
-hgnc_dataset |>
-  dplyr::filter(symbol == 'TP53') |>
-  dplyr::select(c('symbol', 'alias_symbol')) |>
-  tidyr::unnest(cols = 'alias_symbol')
-#> # A tibble: 2 × 2
-#>   symbol alias_symbol
-#>   <chr>  <chr>       
-#> 1 TP53   p53         
-#> 2 TP53   LFS1
-```
-
-In addition, we also provide the function `filter_by_keyword()` that
-allows filtering the data set based on a keyword or regular expression.
-By default this function will look into all columns that contain gene
-symbols or names (`symbol`, `name`, `alias_symbol`, `alias_name`,
-`prev_symbol` and `prev_name`). It works automatically with list-columns
-too.
-
-Look for entries in the data set that contain the keyword `"TP53"`:
-
-``` r
-hgnc_dataset |>
-  filter_by_keyword('TP53') |>
-  dplyr::select(1:4)
-#> # A tibble: 66 × 4
-#>    hgnc_id    hgnc_id2 symbol      name                                       
-#>    <chr>         <int> <chr>       <chr>                                      
-#>  1 HGNC:49685    49685 ABHD15-AS1  ABHD15 antisense RNA 1                     
-#>  2 HGNC:56226    56226 FAM169A-AS1 FAM169A antisense RNA 1                    
-#>  3 HGNC:4136      4136 GAMT        guanidinoacetate N-methyltransferase       
-#>  4 HGNC:54868    54868 KLRK1-AS1   KLRK1 antisense RNA 1                      
-#>  5 HGNC:6568      6568 LGALS7      galectin 7                                 
-#>  6 HGNC:28298    28298 LIF-AS2     LIF antisense RNA 2                        
-#>  7 HGNC:26628    26628 LINC00324   long intergenic non-protein coding RNA 324 
-#>  8 HGNC:28278    28278 LINC00526   long intergenic non-protein coding RNA 526 
-#>  9 HGNC:53222    53222 LINC02303   long intergenic non-protein coding RNA 2303
-#> 10 HGNC:53545    53545 LINC02525   long intergenic non-protein coding RNA 2525
-#> # ℹ 56 more rows
-```
-
-Restrict the search to the `symbol` column:
-
-``` r
-hgnc_dataset |>
-  filter_by_keyword('TP53', cols = 'symbol') |>
-  dplyr::select(1:4)
-#> # A tibble: 23 × 4
-#>    hgnc_id    hgnc_id2 symbol    name                                           
-#>    <chr>         <int> <chr>     <chr>                                          
-#>  1 HGNC:11998    11998 TP53      tumor protein p53                              
-#>  2 HGNC:29984    29984 TP53AIP1  tumor protein p53 regulated apoptosis inducing…
-#>  3 HGNC:11999    11999 TP53BP1   tumor protein p53 binding protein 1            
-#>  4 HGNC:12000    12000 TP53BP2   tumor protein p53 binding protein 2            
-#>  5 HGNC:16328    16328 TP53BP2P1 tumor protein p53 binding protein 2 pseudogene…
-#>  6 HGNC:43652    43652 TP53COR1  tumor protein p53 pathway corepressor 1        
-#>  7 HGNC:19373    19373 TP53I3    tumor protein p53 inducible protein 3          
-#>  8 HGNC:16842    16842 TP53I11   tumor protein p53 inducible protein 11         
-#>  9 HGNC:25102    25102 TP53I13   tumor protein p53 inducible protein 13         
-#> 10 HGNC:18022    18022 TP53INP1  tumor protein p53 inducible nuclear protein 1  
-#> # ℹ 13 more rows
-```
-
-Search for the whole word `"TP53"` exactly by taking advantage of
-regular expressions:
-
-``` r
-hgnc_dataset |>
-  filter_by_keyword('^TP53$', cols = 'symbol') |>
-  dplyr::select(1:4)
-#> # A tibble: 1 × 4
-#>   hgnc_id    hgnc_id2 symbol name             
-#>   <chr>         <int> <chr>  <chr>            
-#> 1 HGNC:11998    11998 TP53   tumor protein p53
-```
+Learn more about this package by reading the documentation at
+<https://www.pattern.institute/hgnc>.
 
 ## Citing the HGNC
 

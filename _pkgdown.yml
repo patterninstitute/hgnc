@@ -22,10 +22,10 @@ reference:
   - import_hgnc_dataset
   - download_hgnc_dataset
 
-- title: Filter and crosswalks gene identifiers
+- title: Filter and crosswalk gene identifiers
   desc: >
-    Find gene entries by keyword matching or copnvert across gene identifiers
-    and other variables
+    Find gene entries by matching keywords or perform conversions across gene
+    identifiers and other variables
   contents:
   - filter_by_keyword
   - crosswalk

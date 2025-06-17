@@ -1,5 +1,5 @@
 ---
-title: "Crosswalk across identifiers"
+title: "Mapping"
 ---
 
 ```{r, include = FALSE}
@@ -47,8 +47,8 @@ crosswalk(
 
 #### Gene symbol to aliases
 
-Note that this is typically a one-to-many mapping, so the result is a list instead of
-character vector.
+Note that this is typically a one-to-many mapping, so the result is a list
+instead of a character vector.
 
 ```{r}
 crosswalk(
@@ -108,6 +108,10 @@ crosswalk(
 ```
 
 #### Gene symbol to MGI marker id
+
+Map human gene symbols to mouse homolog identifiers, i.e.
+[MGI](https://www.informatics.jax.org/). If you need to also work with mouse
+gene names, you might find the package `{mgi.report.reader}` useful.
 
 ```{r}
 # From gene symbol to MGI marker id
