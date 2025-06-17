@@ -1,3 +1,8 @@
+# hgnc 0.3.0
+
+* Update upstream HGNC server addresses: now provided via Google Storage Bucket.
+* Package's source repository is now hosted at <https://github.com/patterninstitute/hgnc>.
+
 # hgnc 0.1.4
 
 * Fix https://github.com/ramiromagno/hgnc/issues/2.
