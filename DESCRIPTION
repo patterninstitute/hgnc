@@ -24,8 +24,7 @@ Description: A set of routines to quickly download and import the
     HUGO Gene Nomenclature Committee (HGNC) data set on mapping of
     gene symbols to gene entries in other genomic databases or resources.
 License: MIT + file LICENSE
-URL: https://github.com/patterninstitute/hgnc,
-    https://www.pattern.institute/hgnc/
+URL: https://github.com/patterninstitute/hgnc, https://www.pattern.institute/hgnc/, http://www.pattern.institute/hgnc/
 BugReports: https://github.com/patterninstitute/hgnc/issues
 Encoding: UTF-8
 LazyData: true
