@@ -24,97 +24,97 @@ column.
 
 #### Gene symbol to HUGO identifier and back
 
-  ```{r}
-  # Example bundled data set.
-  hgnc_dt <- hgnc_dataset_example()
-  
-  # From gene symbol to HUGO identifier
-  crosswalk(
-    c("A1BG", "A1BG-AS1"),
-    from = "symbol",
-    to = "hgnc_id",
-    hgnc_dataset = hgnc_dt
-  )
-  
-  # and back.
-  crosswalk(
-    c("HGNC:5", "HGNC:37133"),
-    from = "hgnc_id",
-    to = "symbol",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# Example bundled data set.
+hgnc_dt <- hgnc_dataset_example()
+
+# From gene symbol to HUGO identifier
+crosswalk(
+  c("A1BG", "A1BG-AS1"),
+  from = "symbol",
+  to = "hgnc_id",
+  hgnc_dataset = hgnc_dt
+)
+
+# and back.
+crosswalk(
+  c("HGNC:5", "HGNC:37133"),
+  from = "hgnc_id",
+  to = "symbol",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to aliases
 
-  Note that this is typically a one-to-many mapping, so the result is a list instead of
-  character vector.
-  
-  ```{r}
-  crosswalk(
-    c("A1BG", "A1BG-AS1", "A1CF"),
-    from = "symbol",
-    to = "alias_symbol",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+Note that this is typically a one-to-many mapping, so the result is a list instead of
+character vector.
+
+```{r}
+crosswalk(
+  c("A1BG", "A1BG-AS1", "A1CF"),
+  from = "symbol",
+  to = "alias_symbol",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to locus group
 
-  ```{r}
-  # From gene symbol to locus group
-  crosswalk(
-    c("A1BG", "A1BG-AS1"),
-    from = "symbol",
-    to = "locus_group",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# From gene symbol to locus group
+crosswalk(
+  c("A1BG", "A1BG-AS1"),
+  from = "symbol",
+  to = "locus_group",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to locus type
 
-  ```{r}
-  # From gene symbol to locus type
-  crosswalk(
-    c("A1BG", "A1BG-AS1"),
-    from = "symbol",
-    to = "locus_type",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# From gene symbol to locus type
+crosswalk(
+  c("A1BG", "A1BG-AS1"),
+  from = "symbol",
+  to = "locus_type",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to Entrez gene id
 
-  ```{r}
-  # From gene symbol to Entrez gene id
-  crosswalk(
-    c("A1BG", "A1BG-AS1"),
-    from = "symbol",
-    to = "entrez_id",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# From gene symbol to Entrez gene id
+crosswalk(
+  c("A1BG", "A1BG-AS1"),
+  from = "symbol",
+  to = "entrez_id",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to Ensembl gene id
 
-  ```{r}
-  # From gene symbol to Ensembl gene id
-  crosswalk(
-    c("A1BG", "A1BG-AS1"),
-    from = "symbol",
-    to = "ensembl_gene_id",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# From gene symbol to Ensembl gene id
+crosswalk(
+  c("A1BG", "A1BG-AS1"),
+  from = "symbol",
+  to = "ensembl_gene_id",
+  hgnc_dataset = hgnc_dt
+)
+```
 
 #### Gene symbol to MGI marker id
 
-  ```{r}
-  # From gene symbol to MGI marker id
-  crosswalk(
-    c("A1BG", "A1BG-AS1", "AADACL4"),
-    from = "symbol",
-    to = "mgd_id",
-    hgnc_dataset = hgnc_dt
-  )
-  ```
+```{r}
+# From gene symbol to MGI marker id
+crosswalk(
+  c("A1BG", "A1BG-AS1", "AADACL4"),
+  from = "symbol",
+  to = "mgd_id",
+  hgnc_dataset = hgnc_dt
+)
+```

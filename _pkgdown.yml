@@ -1,4 +1,4 @@
-url: https://rmagno.eu/hgnc
+url: https://www.pattern.institute/hgnc
 
 template:
   package: chic
@@ -6,14 +6,11 @@ template:
 
 authors:
   Ramiro Magno:
-    href: https://rmagno.eu/
+    href: https://www.pattern.institute/team/rmagno
   Isabel Duarte:
-    href: http://iduarte.eu/
+    href: https://www.pattern.institute/team/iduarte
   Ana Teresa Maia:
     href: https://www.linkedin.com/in/ana-teresa-maia-2a1a866/
   Pattern Institute:
     href: https://www.pattern.institute/
     html: <img src='https://rmagno.eu/hgnc/reference/figures/pi-logotype-canonical-whole-v01.svg' height=24 alt='pi'>
-  CINTESIS:
-    href: https://cintesis.eu/
-    html: <img src='https://rmagno.eu/hgnc/reference/figures/cintesis.svg' height=24 alt='cintesis'>

@@ -11,21 +11,25 @@ A set of routines to quickly download and import the HUGO Gene Nomenclature Comm
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ramiromagno/hgnc}
-  \item \url{https://rmagno.eu/hgnc/}
-  \item Report bugs at \url{https://github.com/ramiromagno/hgnc/issues}
+  \item \url{https://github.com/patterninstitute/hgnc}
+  \item \url{https://www.pattern.institute/hgnc/}
+  \item Report bugs at \url{https://github.com/patterninstitute/hgnc/issues}
 }
 
 }
 \author{
 \strong{Maintainer}: Ramiro Magno \email{rmagno@pattern.institute} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
 
+Authors:
+\itemize{
+  \item Isabel Duarte \email{iduarte@pattern.institute} (\href{https://orcid.org/0000-0003-0060-2936}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Jacob Munro \email{jacob.e.munro@gmail.com} (\href{https://orcid.org/0000-0002-2751-0989}{ORCID}) [contributor]
   \item Ana-Teresa Maia \email{maia.anateresa@gmail.com} (\href{https://orcid.org/0000-0002-0454-9207}{ORCID}) [contributor]
-  \item CINTESIS [copyright holder, funder]
-  \item Pattern Institute [copyright holder, funder]
+  \item Pattern Institute (04jrgd746) [copyright holder, funder]
 }
 
 }
