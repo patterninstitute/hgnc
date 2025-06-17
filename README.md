@@ -7,6 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/hgnc)](https://CRAN.R-project.org/package=hgnc)
+[![R-CMD-check](https://github.com/patterninstitute/hgnc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/patterninstitute/hgnc/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `{hgnc}` is to easily import Human Gene Nomenclature into R.
@@ -30,7 +31,7 @@ memory as a tibble do as follows:
 library(hgnc)
 # Check the date of HGNC last update
 last_update()
-#> [1] "2025-06-13 10:15:52 UTC"
+#> [1] "2025-06-17 11:10:30 UTC"
 # Import the data set in tidy tabular format
 (hgnc_dataset <- import_hgnc_dataset())
 #> # A tibble: 44,117 × 55

@@ -78,7 +78,7 @@ list_archives <- function(release = c("monthly", "quarterly")) {
         format = "%Y-%m-%dT%H:%M:%OSZ",
         tz = "UTC"
       ),
-      md5sum = md5Hash,
+      md5sum = .data$md5Hash,
       url = .data$mediaLink
     ) |>
     dplyr::filter(.data$archive != ".gitignore") |>

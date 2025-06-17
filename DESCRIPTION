@@ -1,7 +1,7 @@
 Package: hgnc
 Type: Package
 Title: Import Human Gene Nomenclature
-Version: 0.2.9002
+Version: 0.2.9003
 Authors@R: c(
     person(given = "Ramiro", family = "Magno",
       email = "rmagno@pattern.institute",
@@ -37,6 +37,7 @@ Imports:
     dplyr,
     httr2,
     memoise,
+    prettyunits,
     purrr,
     readr,
     stringr,
