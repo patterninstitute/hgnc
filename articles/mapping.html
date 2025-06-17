@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Crosswalk across identifiers • hgnc</title>
+<title>Mapping • hgnc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Crosswalk across identifiers">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Mapping">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hgnc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,8 +41,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/import.html">Import Human Gene Nomenclature</a></li>
-    <li><a class="dropdown-item" href="../articles/mapping.html">Crosswalk across identifiers</a></li>
+<li><a class="dropdown-item" href="../articles/import.html">Importing</a></li>
+    <li><a class="dropdown-item" href="../articles/mapping.html">Mapping</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -64,7 +64,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>Crosswalk across identifiers</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Mapping</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/patterninstitute/hgnc/blob/main/vignettes/articles/mapping.Rmd" class="external-link"><code>vignettes/articles/mapping.Rmd</code></a></small>
@@ -111,7 +111,7 @@ set and return values from another column.</p>
 <h4 id="gene-symbol-to-aliases">Gene symbol to aliases<a class="anchor" aria-label="anchor" href="#gene-symbol-to-aliases"></a>
 </h4>
 <p>Note that this is typically a one-to-many mapping, so the result is a
-list instead of character vector.</p>
+list instead of a character vector.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosswalk.html">crosswalk</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A1BG"</span>, <span class="st">"A1BG-AS1"</span>, <span class="st">"A1CF"</span><span class="op">)</span>,</span>
@@ -183,6 +183,9 @@ list instead of character vector.</p>
 <div class="section level4">
 <h4 id="gene-symbol-to-mgi-marker-id">Gene symbol to MGI marker id<a class="anchor" aria-label="anchor" href="#gene-symbol-to-mgi-marker-id"></a>
 </h4>
+<p>Map human gene symbols to mouse homolog identifiers, i.e. <a href="https://www.informatics.jax.org/" class="external-link">MGI</a>. If you need to also
+work with mouse gene names, you might find the package
+<a href="https://www.pattern.institute/mgi.report.reader/" class="external-link">mgi.report.reader</a> useful.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># From gene symbol to MGI marker id</span></span>
 <span><span class="fu"><a href="../reference/crosswalk.html">crosswalk</a></span><span class="op">(</span></span>
@@ -209,7 +212,7 @@ list instead of character vector.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.pattern.institute/team/rmagno" class="external-link">Ramiro Magno</a>, <a href="https://www.pattern.institute/team/iduarte" class="external-link">Isabel Duarte</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>.</p>
+  <p>Developed by <a href="https://www.pattern.institute/team/rmagno" class="external-link">Ramiro Magno</a>, <a href="https://www.pattern.institute/team/iduarte" class="external-link">Isabel Duarte</a>, Jacob Munro, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

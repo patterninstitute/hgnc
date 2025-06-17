@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">hgnc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,8 +44,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/import.html">Import Human Gene Nomenclature</a></li>
-    <li><a class="dropdown-item" href="articles/mapping.html">Crosswalk across identifiers</a></li>
+<li><a class="dropdown-item" href="articles/import.html">Importing</a></li>
+    <li><a class="dropdown-item" href="articles/mapping.html">Mapping</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -69,7 +69,7 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of <a href="https://github.com/patterninstitute/hgnc" class="external-link">hgnc</a> is to easily import Human Gene Nomenclature into R.</p>
+<p>The goal of <a href="https://github.com/patterninstitute/hgnc" class="external-link">hgnc</a> is to easily import <a href="https://www.genenames.org" class="external-link">Human Gene Nomenclature</a> into R.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -80,15 +80,14 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<div class="section level3">
-<h3 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
-</h3>
 <p>To import the latest HGNC gene data set in tabular format directly into memory as a tibble do as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/patterninstitute/hgnc" class="external-link">hgnc</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Check the date of HGNC last update</span></span>
 <span><span class="fu"><a href="reference/last_update.html">last_update</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2025-06-17 11:10:30 UTC"</span></span>
+<span></span>
 <span><span class="co"># Import the data set in tidy tabular format</span></span>
 <span><span class="op">(</span><span class="va">hgnc_dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/import_hgnc_dataset.html">import_hgnc_dataset</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 44,117 × 55</span></span>
@@ -112,95 +111,10 @@
 <span><span class="co">#&gt; #   entrez_id &lt;chr&gt;, ensembl_gene_id &lt;chr&gt;, vega_id &lt;chr&gt;, ucsc_id &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   ena &lt;list&gt;, refseq_accession &lt;list&gt;, ccds_id &lt;list&gt;, uniprot_ids &lt;list&gt;, …</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="convert-between-gene-identifiers">Convert between gene identifiers<a class="anchor" aria-label="anchor" href="#convert-between-gene-identifiers"></a>
-</h3>
-<p>Use <code><a href="reference/crosswalk.html">crosswalk()</a></code> to convert values found in one of the columns of an HGNC gene data set to values in another:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># convert a set of hgnc_ids to symbols</span></span>
-<span><span class="va">hgnc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HGNC:44948"</span>, <span class="st">"HGNC:43240"</span>, <span class="st">"HGNC:23357"</span>, <span class="st">"HGNC:1855"</span>, <span class="st">"HGNC:39400"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/crosswalk.html">crosswalk</a></span><span class="op">(</span><span class="va">hgnc_ids</span>, from <span class="op">=</span> <span class="st">'hgnc_id'</span>, to <span class="op">=</span> <span class="st">'symbol'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "GOLGA2P6"  "RNA5SP340" "MCTS1"     "CENPCP1"   "ASNSP4"</span></span>
-<span></span>
-<span><span class="co"># convert a set of entrez_ids to ensembl_gene_ids</span></span>
-<span><span class="va">entrez_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">79933</span>, <span class="fl">109623458</span>, <span class="fl">158471</span>, <span class="fl">54987</span>, <span class="fl">81631</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/crosswalk.html">crosswalk</a></span><span class="op">(</span><span class="va">entrez_ids</span>, from <span class="op">=</span> <span class="st">'entrez_id'</span>, to <span class="op">=</span> <span class="st">'ensembl_gene_id'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ENSG00000166317" NA                "ENSG00000106772" "ENSG00000162384"</span></span>
-<span><span class="co">#&gt; [5] "ENSG00000140941"</span></span></code></pre></div>
-</div>
-</div>
 <div class="section level2">
-<h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
+<h2 id="learn-more">Learn more<a class="anchor" aria-label="anchor" href="#learn-more"></a>
 </h2>
-<p>You could go to <a href="https://www.genenames.org" class="external-link">www.genenames.org</a> and download the files yourself. So why the need for this R package?</p>
-<p><a href="https://github.com/patterninstitute/hgnc" class="external-link">hgnc</a> really is just a convenience package. The main advantage is that the function <code><a href="reference/import_hgnc_dataset.html">import_hgnc_dataset()</a></code> reads in the data in tabular format with all the columns with the appropriate type (so you don’t have to specify it yourself). As an extra step, those variables that contain multiple values are encoded as list-columns.</p>
-<p>Remember that list-columns can be expanded with <code><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">tidyr::unnest()</a></code>. E.g., <code>alias_symbol</code> is a list-column containing multiple alternative aliases to the standard <code>symbol</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hgnc_dataset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op">==</span> <span class="st">'TP53'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'symbol'</span>, <span class="st">'alias_symbol'</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
-<span><span class="co">#&gt;   symbol alias_symbol</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;  &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1 TP53   &lt;chr [2]&gt;</span></span>
-<span></span>
-<span><span class="va">hgnc_dataset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op">==</span> <span class="st">'TP53'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'symbol'</span>, <span class="st">'alias_symbol'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">unnest</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="st">'alias_symbol'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span><span class="co">#&gt;   symbol alias_symbol</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 TP53   p53         </span></span>
-<span><span class="co">#&gt; 2 TP53   LFS1</span></span></code></pre></div>
-<p>In addition, we also provide the function <code><a href="reference/filter_by_keyword.html">filter_by_keyword()</a></code> that allows filtering the data set based on a keyword or regular expression. By default this function will look into all columns that contain gene symbols or names (<code>symbol</code>, <code>name</code>, <code>alias_symbol</code>, <code>alias_name</code>, <code>prev_symbol</code> and <code>prev_name</code>). It works automatically with list-columns too.</p>
-<p>Look for entries in the data set that contain the keyword <code>"TP53"</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hgnc_dataset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/filter_by_keyword.html">filter_by_keyword</a></span><span class="op">(</span><span class="st">'TP53'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 66 × 4</span></span>
-<span><span class="co">#&gt;    hgnc_id    hgnc_id2 symbol      name                                       </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;                                      </span></span>
-<span><span class="co">#&gt;  1 HGNC:49685    49685 ABHD15-AS1  ABHD15 antisense RNA 1                     </span></span>
-<span><span class="co">#&gt;  2 HGNC:56226    56226 FAM169A-AS1 FAM169A antisense RNA 1                    </span></span>
-<span><span class="co">#&gt;  3 HGNC:4136      4136 GAMT        guanidinoacetate N-methyltransferase       </span></span>
-<span><span class="co">#&gt;  4 HGNC:54868    54868 KLRK1-AS1   KLRK1 antisense RNA 1                      </span></span>
-<span><span class="co">#&gt;  5 HGNC:6568      6568 LGALS7      galectin 7                                 </span></span>
-<span><span class="co">#&gt;  6 HGNC:28298    28298 LIF-AS2     LIF antisense RNA 2                        </span></span>
-<span><span class="co">#&gt;  7 HGNC:26628    26628 LINC00324   long intergenic non-protein coding RNA 324 </span></span>
-<span><span class="co">#&gt;  8 HGNC:28278    28278 LINC00526   long intergenic non-protein coding RNA 526 </span></span>
-<span><span class="co">#&gt;  9 HGNC:53222    53222 LINC02303   long intergenic non-protein coding RNA 2303</span></span>
-<span><span class="co">#&gt; 10 HGNC:53545    53545 LINC02525   long intergenic non-protein coding RNA 2525</span></span>
-<span><span class="co">#&gt; # ℹ 56 more rows</span></span></code></pre></div>
-<p>Restrict the search to the <code>symbol</code> column:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hgnc_dataset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/filter_by_keyword.html">filter_by_keyword</a></span><span class="op">(</span><span class="st">'TP53'</span>, cols <span class="op">=</span> <span class="st">'symbol'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 23 × 4</span></span>
-<span><span class="co">#&gt;    hgnc_id    hgnc_id2 symbol    name                                           </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                                          </span></span>
-<span><span class="co">#&gt;  1 HGNC:11998    11998 TP53      tumor protein p53                              </span></span>
-<span><span class="co">#&gt;  2 HGNC:29984    29984 TP53AIP1  tumor protein p53 regulated apoptosis inducing…</span></span>
-<span><span class="co">#&gt;  3 HGNC:11999    11999 TP53BP1   tumor protein p53 binding protein 1            </span></span>
-<span><span class="co">#&gt;  4 HGNC:12000    12000 TP53BP2   tumor protein p53 binding protein 2            </span></span>
-<span><span class="co">#&gt;  5 HGNC:16328    16328 TP53BP2P1 tumor protein p53 binding protein 2 pseudogene…</span></span>
-<span><span class="co">#&gt;  6 HGNC:43652    43652 TP53COR1  tumor protein p53 pathway corepressor 1        </span></span>
-<span><span class="co">#&gt;  7 HGNC:19373    19373 TP53I3    tumor protein p53 inducible protein 3          </span></span>
-<span><span class="co">#&gt;  8 HGNC:16842    16842 TP53I11   tumor protein p53 inducible protein 11         </span></span>
-<span><span class="co">#&gt;  9 HGNC:25102    25102 TP53I13   tumor protein p53 inducible protein 13         </span></span>
-<span><span class="co">#&gt; 10 HGNC:18022    18022 TP53INP1  tumor protein p53 inducible nuclear protein 1  </span></span>
-<span><span class="co">#&gt; # ℹ 13 more rows</span></span></code></pre></div>
-<p>Search for the whole word <code>"TP53"</code> exactly by taking advantage of regular expressions:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hgnc_dataset</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/filter_by_keyword.html">filter_by_keyword</a></span><span class="op">(</span><span class="st">'^TP53$'</span>, cols <span class="op">=</span> <span class="st">'symbol'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
-<span><span class="co">#&gt;   hgnc_id    hgnc_id2 symbol name             </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;            </span></span>
-<span><span class="co">#&gt; 1 HGNC:11998    11998 TP53   tumor protein p53</span></span></code></pre></div>
+<p>Learn more about this package by reading the documentation at <a href="https://www.pattern.institute/hgnc" class="uri">https://www.pattern.institute/hgnc</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="citing-the-hgnc">Citing the HGNC<a class="anchor" aria-label="anchor" href="#citing-the-hgnc"></a>
@@ -249,6 +163,7 @@
 <a href="https://www.pattern.institute/team/rmagno" class="external-link">Ramiro Magno</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-5226-3441" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>
 <a href="https://www.pattern.institute/team/iduarte" class="external-link">Isabel Duarte</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0060-2936" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Jacob Munro <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2751-0989" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>
 <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a> <br><small class="roles"> Copyright holder, funder </small>  <a href="https://ror.org/04jrgd746" class="external-link"><img src="https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg" class="ror" alt="ROR"></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
@@ -268,7 +183,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.pattern.institute/team/rmagno" class="external-link">Ramiro Magno</a>, <a href="https://www.pattern.institute/team/iduarte" class="external-link">Isabel Duarte</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>.</p>
+  <p>Developed by <a href="https://www.pattern.institute/team/rmagno" class="external-link">Ramiro Magno</a>, <a href="https://www.pattern.institute/team/iduarte" class="external-link">Isabel Duarte</a>, Jacob Munro, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
