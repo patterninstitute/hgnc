@@ -42,6 +42,7 @@ Imports:
     stringr,
     tibble
 Suggests: 
+    lubridate,
     spelling,
     tidyr
 Language: en-US
