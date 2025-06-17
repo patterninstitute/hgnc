@@ -19,22 +19,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/hgnc)](https://CRAN.R-project.org/package=hgnc)
 <!-- badges: end -->
 
-The [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/) is a
-committee of the Human Genome Organisation (HUGO) that sets the standards for
-human gene nomenclature.
-
-The HGNC approves a unique and meaningful name for every known human gene, based
-on a group of experts. In addition, the HGNC also provides the mapping between
-gene symbols to gene entries in other popular databases or resources: the HGNC
-complete gene set.
-
-The goal of `{hgnc}` is to easily download and import the latest HGNC complete
-gene data set into R.
-
-This data set provides a useful mapping of HGNC symbols to gene entries in other
-popular databases or resources, such as, the Entrez gene identifier or the UCSC
-gene identifier, among many others. Check the documentation of the function
-`import_hgnc_dataset()` for a description of the several fields available.
+The goal of `{hgnc}` is to easily import Human Gene Nomenclature into R.
 
 ## Installation
 
@@ -42,13 +27,6 @@ Install `{hgnc}` from CRAN:
 
 ``` r
 install.packages("hgnc")
-```
-
-You can install the development version of `{hgnc}` like so:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("ramiromagno/hgnc")
 ```
 
 ## Usage
@@ -60,99 +38,25 @@ as a tibble do as follows:
 
 ```{r}
 library(hgnc)
-
-# Date of HGNC last update
+# Check the date of HGNC last update
 last_update()
-
-# Set the HGNC archive file to use for the remainder of the R-session
-use_hgnc_file(file = latest_archive_url())
-
 # Import the data set in tidy tabular format
-# NB: Multiple-value columns are kept as list-columns
-hgnc_dataset <- import_hgnc_dataset()
-
-dplyr::glimpse(hgnc_dataset)
+(hgnc_dataset <- import_hgnc_dataset())
 ```
-
-The original data set does not contain the column `hgnc_id2`, which is added as
-a convenience by `{hgnc}`; this is because although the HGNC identifiers should
-formally contain the prefix `"HGNC:"`, it is often found elsewhere that they are
-stripped of this prefix, so the column `hgnc_id2` is also provided whose values
-only contain the integer part.
-
-```{r}
-hgnc_dataset %>%
-  dplyr::select(c('hgnc_id', 'hgnc_id2'))
-```
-
-### Locus groups
-
-The HGNC defines a group name (`locus_group`) for a set of related locus types.
-Here's how you can quickly check how many gene entries there are per locus
-group.
-
-```{r}
-hgnc_dataset %>%
-  dplyr::count(locus_group, sort = TRUE)
-```
-
-`locus_type` provides a finer classification:
-
-```{r}
-hgnc_dataset %>%
-  dplyr::group_by(locus_group) %>%
-  dplyr::count(locus_type, sort = TRUE) %>%
-  dplyr::arrange(locus_group) %>%
-  print(n = Inf)
-```
-
-### Setting the archive version
-
-By default `{hgnc}` will use the latest version of HGNC archive dataset, as returned by the function `latest_archive_url()`.
-Besides the latest archive, the [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/) website also provides monthly and quarterly
-updates. 
-You can conveniently get the latest monthly and quarterly updates by running `latest_monthly_url()` or `latest_quarterly_url()`.
-Use `list_archives()` to list the all currently available for download archives.
-The column `url` contains the direct download link that you can pass to `use_hgnc_file()` and `import_hgnc_dataset()` to import the data into R.
-
-```{r}
-list_archives()
-
-use_hgnc_file(file = latest_monthly_url())
-```
-
-### Downloading to disk
-
-If you prefer to download the data set as a file to disk first, you can use
-`download_archive()`. Then, you can use `import_hgnc_dataset()` to import
-the downloaded file into R.
 
 ### Convert between gene identifiers
 
-Two convenience functions are provided to convert between different gene identifiers in the HGNC dataset: `hgnc_join` takes as input a data frame and adds an additional column from the HGNC dataset, and `hgnc_convert` converts a vector from one identifier to another.
+Use `crosswalk()` to convert values found in one of the columns of an HGNC gene
+data set to values in another:
 
 ```{r}
-dplyr::tibble(hgnc_id = c("HGNC:44948", "HGNC:43240", "HGNC:23357", "HGNC:1855", "HGNC:39400")) %>% 
-  # add in gene symbol
-  hgnc_join(by = 'hgnc_id', column = 'symbol') %>% 
-  # add in entrez_id
-  hgnc_join(by = 'hgnc_id', column = 'entrez_id')
-
 # convert a set of hgnc_ids to symbols
 hgnc_ids <- c("HGNC:44948", "HGNC:43240", "HGNC:23357", "HGNC:1855", "HGNC:39400")
-hgnc_convert(hgnc_ids, from = 'hgnc_id', to = 'symbol')
+crosswalk(hgnc_ids, from = 'hgnc_id', to = 'symbol')
 
 # convert a set of entrez_ids to ensembl_gene_ids
 entrez_ids <- c(79933, 109623458, 158471, 54987, 81631)
-hgnc_convert(entrez_ids, from = 'entrez_id', to = 'ensembl_gene_id')
-```
-
-### Caching
-
-By default `{hgnc}` will use memory-based caching through the package `{memoise}`. This will ensure that time consuming downloads are not rerun unnecessarily during a single R-session. Persistent disk based caching can also be enabled using the function `use_cache_dir`.
-
-```{r}
-use_cache_dir(cache_dir =  './hgnc_cache')
+crosswalk(entrez_ids, from = 'entrez_id', to = 'ensembl_gene_id')
 ```
 
 ## Motivation
@@ -171,13 +75,13 @@ Remember that list-columns can be expanded with `tidyr::unnest()`. E.g.,
 standard `symbol`:
 
 ```{r}
-hgnc_dataset %>%
-  dplyr::filter(symbol == 'TP53') %>%
+hgnc_dataset |>
+  dplyr::filter(symbol == 'TP53') |>
   dplyr::select(c('symbol', 'alias_symbol'))
 
-hgnc_dataset %>%
-  dplyr::filter(symbol == 'TP53') %>%
-  dplyr::select(c('symbol', 'alias_symbol')) %>%
+hgnc_dataset |>
+  dplyr::filter(symbol == 'TP53') |>
+  dplyr::select(c('symbol', 'alias_symbol')) |>
   tidyr::unnest(cols = 'alias_symbol')
 ```
 
@@ -190,16 +94,16 @@ It works automatically with list-columns too.
 Look for entries in the data set that contain the keyword `"TP53"`:
 
 ```{r}
-hgnc_dataset %>%
-  filter_by_keyword('TP53') %>%
+hgnc_dataset |>
+  filter_by_keyword('TP53') |>
   dplyr::select(1:4)
 ```
 
 Restrict the search to the `symbol` column:
 
 ```{r}
-hgnc_dataset %>%
-  filter_by_keyword('TP53', cols = 'symbol') %>%
+hgnc_dataset |>
+  filter_by_keyword('TP53', cols = 'symbol') |>
   dplyr::select(1:4)
 ```
 
@@ -207,8 +111,8 @@ Search for the whole word `"TP53"` exactly by taking advantage of regular
 expressions:
 
 ```{r}
-hgnc_dataset %>%
-  filter_by_keyword('^TP53$', cols = 'symbol') %>%
+hgnc_dataset |>
+  filter_by_keyword('^TP53$', cols = 'symbol') |>
   dplyr::select(1:4)
 ```
 

@@ -6,7 +6,7 @@
 \alias{hgnc-package}
 \title{hgnc: Import Human Gene Nomenclature}
 \description{
-A set of routines to quickly download and import the HUGO Gene Nomenclature Committee Data (HGNC) data set on mapping of gene symbols to gene entries in other genomic databases or resources.
+A set of routines to quickly download and import the HUGO Gene Nomenclature Committee (HGNC) data set on mapping of gene symbols to gene entries in other genomic databases or resources.
 }
 \seealso{
 Useful links:

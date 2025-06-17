@@ -1,10 +1,9 @@
-latest_archive <- function(type = c('tsv', 'json')) {
+latest_archive <- function() {
 
-  type <- match.arg(type)
   basename <- 'hgnc_complete_set'
-  extension <- ifelse(type == 'tsv', 'txt', 'json')
+  extension <- "tsv"
   filename <- paste0(basename, '.', extension)
-  url <- paste0(ftp_base_url(), type, '/', filename)
+  url <- paste0(ftp_base_url(), extension, '/', filename)
 
   datetime <- last_update()
 
@@ -14,7 +13,7 @@ latest_archive <- function(type = c('tsv', 'json')) {
       file = filename,
       datetime = datetime,
       date = as.Date(datetime),
-      time = hms::as_hms(datetime),
+      time = format(as.POSIXct(datetime), format = "%H:%M:%S"),
       size = NA_integer_,
       url = url
     )
@@ -25,21 +24,20 @@ latest_archive <- function(type = c('tsv', 'json')) {
 
 #' Latest HGNC archive URL
 #'
-#' @param type The format of the archive: `"tsv"` or `"json"`.
-#'
-#' @return A string with the latest HGNC archive URL.
+#' @returns A string with the latest HGNC archive URL.
 #'
 #' @examples
-#' latest_archive_url()
+#' try(latest_archive_url())
 #'
 #' @export
-latest_archive_url <- function(type = c('tsv', 'json')) {
+latest_archive_url <- function() {
 
-  type <- match.arg(type)
+  base_url <- "https://storage.googleapis.com/public-download-files/"
   basename <- 'hgnc_complete_set'
-  extension <- ifelse(type == 'tsv', 'txt', 'json')
+  extension <- "tsv"
+  type <- extension
   filename <- paste0(basename, '.', extension)
-  url <- paste0(ftp_base_url(), type, '/', filename)
+  url <- paste0(base_url, "hgnc/", type, "/", type, '/', filename)
   attr(url, 'last_update') <- last_update()
 
   return(url)
@@ -56,11 +54,10 @@ latest_archive_url <- function(type = c('tsv', 'json')) {
 latest_monthly_url <- function() {
 
   url <-
-    list_archives() %>%
-    dplyr::filter(.data$series == 'monthly',
-                  .data$dataset == 'hgnc_complete_set') %>%
-    dplyr::arrange(date) %>%
-    dplyr::pull(url) %>%
+    list_archives(release = "monthly") |>
+    dplyr::filter(.data$dataset == 'hgnc_complete_set') |>
+    dplyr::arrange(date) |>
+    dplyr::pull(url) |>
     dplyr::last()
 
   stopifnot(length(url) == 1L)
@@ -79,11 +76,10 @@ latest_monthly_url <- function() {
 latest_quarterly_url <- function() {
 
   url <-
-    list_archives() %>%
-    dplyr::filter(.data$series == 'quarterly',
-                  .data$dataset == 'hgnc_complete_set') %>%
-    dplyr::arrange(date) %>%
-    dplyr::pull(url) %>%
+    list_archives(release = "quarterly") |>
+    dplyr::filter(.data$dataset == 'hgnc_complete_set') |>
+    dplyr::arrange(date) |>
+    dplyr::pull(url) |>
     dplyr::last()
 
   stopifnot(length(url) == 1L)

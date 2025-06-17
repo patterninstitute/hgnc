@@ -4,10 +4,7 @@
 \alias{latest_archive_url}
 \title{Latest HGNC archive URL}
 \usage{
-latest_archive_url(type = c("tsv", "json"))
-}
-\arguments{
-\item{type}{The format of the archive: \code{"tsv"} or \code{"json"}.}
+latest_archive_url()
 }
 \value{
 A string with the latest HGNC archive URL.
@@ -16,6 +13,6 @@ A string with the latest HGNC archive URL.
 Latest HGNC archive URL
 }
 \examples{
-latest_archive_url()
+try(latest_archive_url())
 
 }

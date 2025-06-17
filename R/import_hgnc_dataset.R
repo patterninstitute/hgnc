@@ -19,7 +19,7 @@ hgnc_col_types <- list(
   date_symbol_changed = readr::col_date(),
   date_modified = readr::col_date(),
   date_name_changed = readr::col_date(),
-  entrez_id = readr::col_integer(),
+  entrez_id = readr::col_character(),
   ensembl_gene_id = readr::col_character(),
   vega_id = readr::col_character(),
   ucsc_id = readr::col_character(),
@@ -49,7 +49,7 @@ hgnc_col_types <- list(
   lncrnadb = readr::col_character(),
   enzyme_id = readr::col_character(),
   intermediate_filament_db = readr::col_character(),
-  rna_central_ids = readr::col_character(),
+  rna_central_id = readr::col_character(),
   lncipedia = readr::col_character(),
   gtrnadb = readr::col_character(),
   agr = readr::col_character(),
@@ -78,9 +78,9 @@ hgnc_list_cols <- c(
 )
 
 
-import_hgnc_dataset_ <- function(file, ...) {
+import_hgnc_dataset_ <- function(file = latest_archive_url()) {
 
-  tbl <-readr::read_tsv(file = file, col_types = hgnc_col_types, ...)
+  tbl <-readr::read_tsv(file = file, col_types = hgnc_col_types)
 
   # check for missing columns
   missing_cols <- setdiff(names(tbl), names(hgnc_col_types))
@@ -93,154 +93,37 @@ import_hgnc_dataset_ <- function(file, ...) {
     warning("Extra column(s) present in HGNC dataset: ", stringr::str_c(extra_cols, collapse = ', '))
   }
 
-  tbl %>%
+  tbl |>
     # Create list-columns for those cases where multiples values are possible
-    dplyr::mutate(dplyr::across(dplyr::any_of(hgnc_list_cols), ~ stringr::str_split(., pattern = '\\|'))) %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(hgnc_list_cols), ~ stringr::str_split(., pattern = '\\|'))) |>
     # Add integer column with 'HGNC:' removed
     dplyr::mutate(hgnc_id2 = as.integer(stringr::str_remove(.data$hgnc_id, '^HGNC:')), .after = 'hgnc_id')
 }
 
 #' Import HGNC data
 #'
-#' This function imports into memory, as a tibble, the complete HGNC data set
-#' from a TSV file.
+#' [import_hgnc_dataset()] imports HGNC data into R. Specify a directory `path`
+#' in addition if you wish the save the data to disk.
 #'
 #' @param file A file or URL of the complete HGNC data set (in TSV format).
-#' @param ... Additional arguments to be passed on to [readr::read_tsv()].
+#' Use [list_archives()] to list previous versions of these data. Pass one
+#' of the URLs (column `url`) to `file` to import that specific version. By
+#' default the value of `file` is the URL corresponding to the latest version,
+#' i.e. the returned value of [latest_archive_url()].
 #'
 #' @return A [tibble][tibble::tibble-package] of the HGNC data set consisting of
 #'   55 columns:
-#' \describe{
-#' \item{`hgnc_id`}{A unique ID provided by the HGNC for each gene with an approved symbol. IDs are of the format HGNC:n, where n is a unique number. HGNC IDs remain stable even if a name or symbol changes.}
-#' \item{`hgnc_id2`}{A stripped down version of `hgnc_id` where the prefix `"HGNC:"` has been removed (this column is added by the package `{hgnc}`).}
-#' \item{`symbol`}{The official gene symbol approved by the HGNC, which is typically a short form of the gene name. Symbols are approved in accordance with the Guidelines for Human Gene Nomenclature.}
-#' \item{`name`}{The full gene name approved by the HGNC; corresponds to the approved symbol above.}
-#' \item{`locus_group`}{A group name for a set of related locus types as defined by the HGNC. One of: `"protein-coding gene"`, `"non-coding RNA"`, `"pseudogene"` or `"other"`.}
-#' \item{`locus_type`}{Specifies the genetic class of each gene entry:
-#'   \describe{
-#'     \item{`"gene with protein product"`}{Protein-coding genes (the protein
-#'     may be predicted and of unknown function),
-#'     [SO:0001217](http://www.sequenceontology.org/browser/current_svn/term/SO:0001217).}
-#'     \item{`"RNA, cluster"`}{Region containing a cluster of small non-coding RNA genes.}
-#'     \item{`"RNA, long non-coding"`}{Non-protein coding genes that encode long
-#'     non-coding RNAs (lncRNAs)
-#'     [SO:0001877](http://www.sequenceontology.org/browser/current_svn/term/SO:0001877);
-#'     these are at least 200 nt in length. Subtypes include intergenic
-#'     [SO:0001463](http://www.sequenceontology.org/browser/current_svn/term/SO:0001463),
-#'     intronic
-#'     [SO:0001903](http://www.sequenceontology.org/browser/current_svn/term/SO:0001903)
-#'     and antisense
-#'     [SO:0001904](http://www.sequenceontology.org/browser/current_svn/term/SO:0001904).}
-#'     \item{`"RNA, micro"`}{Non-protein coding genes that encode microRNAs (miRNAs), [SO:0001265](http://www.sequenceontology.org/browser/current_svn/term/SO:0001265).}
-#'     \item{`"RNA, ribosomal"`}{Non-protein coding genes that encode ribosomal RNAs (rRNAs), [SO:0001637](http://www.sequenceontology.org/browser/current_svn/term/SO:0001637).}
-#'     \item{`"RNA, small nuclear"`}{Non-protein coding genes that encode small nuclear RNAs (snRNAs), [SO:0001268](http://www.sequenceontology.org/browser/current_svn/term/SO:0001268).}
-#'     \item{`"RNA, small nucleolar"`}{Non-protein coding genes that encode small nucleolar RNAs (snoRNAs) containing C/D or H/ACA box domains, [SO:0001267](http://www.sequenceontology.org/browser/current_svn/term/SO:0001267).}
-#'     \item{`"RNA, small cytoplasmic"`}{Non-protein coding genes that encode small cytoplasmic RNAs (scRNAs), [SO:0001266](http://www.sequenceontology.org/browser/current_svn/term/SO:0001266).}
-#'     \item{`"RNA, transfer"`}{Non-protein coding genes that encode transfer RNAs (tRNAs), [SO:0001272](http://www.sequenceontology.org/browser/current_svn/term/SO:0001272).}
-#'     \item{`"RNA, small misc"`}{Non-protein coding genes that encode miscellaneous types of small ncRNAs, such as vault ([SO:0000404](http://www.sequenceontology.org/browser/current_svn/term/SO:0000404)) and Y ([SO:0000405](http://www.sequenceontology.org/browser/current_svn/term/SO:0000405)) RNA genes.}
-#'     \item{`"phenotype only"`}{Mapped phenotypes where the causative gene has not been identified, [SO:0001500](http://www.sequenceontology.org/browser/current_svn/term/SO:0001500).}
-#'     \item{`"pseudogene"`}{Genomic DNA sequences that are similar to protein-coding genes but do not encode a functional protein, [SO:0000336](http://www.sequenceontology.org/browser/current_svn/term/SO:0000336).}
-#'     \item{`"complex locus constituent"`}{Transcriptional unit that is part of a named complex locus.}
-#'     \item{`"endogenous retrovirus"`}{Integrated retroviral elements that are transmitted through the germline, [SO:0000100](http://www.sequenceontology.org/browser/current_svn/term/SO:0000100).}
-#'     \item{`"fragile site"`}{A heritable locus on a chromosome that is prone to DNA breakage.}
-#'     \item{`"immunoglobulin gene"`}{Gene segments that undergo somatic recombination to form heavy or light chain immunoglobulin genes (SO:0000460). Also includes immunoglobulin gene segments with open reading frames that either cannot undergo somatic recombination, or encode a peptide that is not predicted to fold correctly; these are identified by inclusion of the term "non-functional" in the gene name.}
-#'     \item{`"immunoglobulin pseudogene"`}{Immunoglobulin gene segments that are inactivated due to frameshift mutations and/or stop codons in the open reading frame.}
-#'     \item{`"protocadherin"`}{Gene segments that constitute the three clustered protocadherins (alpha, beta and gamma)}
-#'     \item{`"readthrough"`}{A naturally occurring transcript containing coding sequence from two or more genes that can also be transcribed individually.}
-#'     \item{`"region"`}{Extents of genomic sequence that contain one or more genes, also applied to non-gene areas that do not fall into other types.}
-#'     \item{`"T cell receptor gene"`}{Gene segments that undergo somatic recombination to form either alpha, beta, gamma or delta chain T cell receptor genes ([SO:0000460](http://www.sequenceontology.org/browser/current_svn/term/SO:0000460)). Also includes T cell receptor gene segments with open reading frames that either cannot undergo somatic recombination, or encode a peptide that is not predicted to fold correctly; these are identified by inclusion of the term "non-functional" in the gene name.}
-#'     \item{`"T cell receptor pseudogene"`}{T cell receptor gene segments that are inactivated due to frameshift mutations and/or stop codons in the open reading frame.}
-#'     \item{`"transposable element"`}{A segment of repetitive DNA that can move, or retrotranspose, to new sites within the genome ([SO:0000101](http://www.sequenceontology.org/browser/current_svn/term/SO:0000101)).}
-#'     \item{`"unknown"`}{Entries where the locus type is currently unknown.}
-#'     \item{`"virus integration site"`}{Target sequence for the integration of viral DNA into the genome.}
-#'   }
-#' }
-#' \item{`status`}{Status of the symbol report, which can be either `"Approved"` or `"Entry Withdrawn"`.}
-#' \item{`location`}{Chromosomal location. Indicates the cytogenetic location of
-#' the gene or region on the chromsome, e.g. `"19q13.43"`. In the absence of
-#' that information one of the following may be listed:
-#' \describe{
-#' \item{`"not on reference assembly"`}{Named gene is not annotated on the current version of the Genome Reference Consortium human reference assembly; may have been annotated on previous assembly versions or on a non-reference human assembly.}
-#' \item{`"unplaced"`}{Named gene is annotated on an unplaced/unlocalized scaffold of the human reference assembly.}
-#' \item{`"reserved"`}{Named gene has never been annotated on any human assembly.}
-#' }
-#' }
-#' \item{`location_sortable`}{A sortable version of the `location` column (see above).}
-#' \item{`alias_symbol`}{Alternative symbols that have been used to refer to the gene. Aliases may be from literature, from other databases or may be added to represent membership of a gene group.}
-#' \item{`alias_name`}{Alternative names for the gene. Aliases may be from literature, from other databases or may be added to represent membership of a gene group.}
-#' \item{`prev_symbol`}{This field displays any symbols that were previously HGNC-approved nomenclature.}
-#' \item{`prev_name`}{This field displays any names that were previously HGNC-approved nomenclature.}
-#' \item{`gene_group`}{A gene group. Each gene has been assigned to one or more groups, according to either sequence similarity or information from publications, specialist advisors for that group or other databases. Groups may be either structural or functional.}
-#' \item{`gene_group_id`}{Gene group identifier, an integer number. This column contains the gene group identifiers, see `gene_group` for the gene group name.}
-#' \item{`date_approved_reserved`}{The date the entry was first approved.}
-#' \item{`date_symbol_changed`}{The date the gene symbol was last changed.}
-#' \item{`date_name_changed`}{The date the gene name was last changed.}
-#' \item{`date_modified`}{Date the entry was last modified.}
-#' \item{`entrez_id`}{Entrez gene identifier.}
-#' \item{`ensembl_gene_id`}{Ensembl gene identifier.}
-#' \item{`vega_id`}{VEGA gene identifier.}
-#' \item{`ucsc_id`}{UCSC gene identifier.}
-#' \item{`ena`}{International Nucleotide Sequence Database Collaboration (GenBank, ENA and DDBJ) accession number(s).}
-#' \item{`refseq_accession`}{The Reference Sequence (RefSeq) identifier for that entry, provided by the NCBI.}
-#' \item{`ccds_id`}{Consensus CDS identifier.}
-#' \item{`uniprot_ids`}{UniProt protein accession.}
-#' \item{`pubmed_id`}{Pubmed and Europe Pubmed Central PMIDs.}
-#' \item{`mgd_id`}{Mouse genome informatics database identifier.}
-#' \item{`rgd_id`}{Rat genome database gene identifier.}
-#' \item{`lsdb`}{The name of the Locus Specific Mutation Database and URL for the gene.}
-#' \item{`cosmic`}{Symbol used within the Catalogue of somatic mutations in cancer for the gene.}
-#' \item{`omim_id`}{Online Mendelian Inheritance in Man (OMIM) identifier.}
-#' \item{`mirbase`}{miRBase identifier.}
-#' \item{`homeodb`}{Homeobox Database identifier.}
-#' \item{`snornabase`}{snoRNABase identifier.}
-#' \item{`bioparadigms_slc`}{Symbol used to link to the SLC tables database at bioparadigms.org for the gene.}
-#' \item{`orphanet`}{Orphanet identifier.}
-#' \item{`pseudogene.org`}{Pseudogene.org identifier.}
-#' \item{`horde_id`}{Symbol used within HORDE for the gene.}
-#' \item{`merops`}{Identifier used to link to the MEROPS peptidase database.}
-#' \item{`imgt`}{Symbol used within international ImMunoGeneTics information system.}
-#' \item{`iuphar`}{The objectId used to link to the IUPHAR/BPS Guide to PHARMACOLOGY database.}
-#' \item{`kznf_gene_catalog`}{Lawrence Livermore National Laboratory Human KZNF Gene Catalog (LLNL) identifier.}
-#' \item{`mamit-trnadb`}{Identifier to link to the Mamit-tRNA database.}
-#' \item{`cd`}{Symbol used within the Human Cell Differentiation Molecule database for the gene.}
-#' \item{`lncrnadb`}{lncRNA Database identifier.}
-#' \item{`enzyme_id`}{ENZYME EC accession number.}
-#' \item{`intermediate_filament_db`}{Identifier used to link to the Human Intermediate Filament Database.}
-#' \item{`rna_central_ids`}{Identifier in the RNAcentral, The non-coding RNA sequence database.}
-#' \item{`lncipedia`}{The LNCipedia identifier to which the gene belongs. This will only appear if the gene is a long non-coding RNA.}
-#' \item{`gtrnadb`}{The GtRNAdb identifier to which the gene belongs. This will only appear if the gene is a tRNA.}
-#' \item{`agr`}{The Alliance of Genomic Resources HGNC ID for the Human gene page within the resource.}
-#' \item{`mane_select`}{MANE Select nucleotide accession with version (i.e. NCBI RefSeq or Ensembl transcript ID and version).}
-#' \item{`gencc`}{Gene Curation Coalition (GenCC) Database identifier.}
-#' }
+#'
+#' `r col_descriptions()`
 #'
 #' @examples
 #' \dontrun{import_hgnc_dataset()}
+#'
 #' @export
-# import_hgnc_dataset memoised in zzz.R
-import_hgnc_dataset <- function(file = get_hgnc_file(),
-                                ...) {
+import_hgnc_dataset <- function(file = latest_archive_url()) {
 
-  stopifnot(rlang::is_scalar_character(file))
+  import_hgnc_dataset_(file = file)
 
-  cache_dir <- get_cache_dir()
-
-  if (!is.null(cache_dir)) {
-
-    func <- memoise::memoise(
-      import_hgnc_dataset_,
-      cache =  cachem::cache_disk(max_size = 1024 * 1024^2,
-                                  dir = cache_dir)
-    )
-
-  } else {
-
-    func <- import_hgnc_dataset_
-
-  }
-
-  func(file = file, ...)
 }
-
 
 

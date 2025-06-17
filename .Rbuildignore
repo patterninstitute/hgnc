@@ -10,3 +10,7 @@
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
 ^tools$
+^vignettes/articles$
+^notes$
+^data-raw$
+^tmp$

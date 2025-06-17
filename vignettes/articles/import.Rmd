@@ -1,0 +1,60 @@
+---
+title: "Import Human Gene Nomenclature"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(hgnc)
+```
+
+The [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/) is a
+committee of the Human Genome Organisation (HUGO) that sets the standards for
+human gene nomenclature.
+
+The HGNC approves a unique and meaningful name for every known human gene, based
+on a group of experts. In addition, the HGNC also provides the mapping between
+gene symbols to gene entries in other popular databases or resources: the HGNC
+complete gene set.
+
+Use the function `import_hgnc_dataset()` to import the latest HGNC complete
+gene data set directly into R. This downloads the latest archive from
+<https://www.genenames.org/download/archive/monthly/tsv/>.
+
+```{r}
+(hgnc_dataset <- import_hgnc_dataset())
+```
+
+## Saving to disk
+
+`import_hgnc_dataset()` reads data directly into memory. Use
+`download_hgnc_dataset()` to save data into disk first, and import straightaway
+from disk:
+
+```{r}
+# Note that `download_hgnc_dataset()` returns the path of the saved file.
+(local_file <- download_hgnc_dataset())
+import_hgnc_dataset(file = local_file)
+```
+
+## Data releases
+
+HGNC complete gene data sets are released monthly and quarterly. If you prefer
+to download a specific release other than the latest, use first the function
+`list_archives()` to list available archives:
+
+```{r}
+(releases <- list_archives("monthly"))
+```
+
+Then pass the URL corresponding to the archive of interest to
+`import_hgnc_dataset()`:
+
+```{r warning=FALSE}
+# First release, 2021 March 01
+(url <- releases$url[1])
+import_hgnc_dataset(file = url)
+```
+

@@ -1,5 +1,9 @@
+archive_listing_base_url <- function() {
+  "https://www.genenames.org/download/archive/"
+}
+
 ftp_base_url <- function() {
-  'https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/'
+  'https://storage.googleapis.com/public-download-files/hgnc/archive/'
 }
 
 ftp_archive <- function() {
