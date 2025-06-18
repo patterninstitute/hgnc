@@ -60,7 +60,7 @@ last_update()
 ## Learn more
 
 Learn more about this package by reading the documentation at
-<https://www.pattern.institute/hgnc>.
+<https://www.pattern.institute/hgnc/>.
 
 ## Citing the HGNC
 
